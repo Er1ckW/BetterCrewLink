@@ -15,7 +15,7 @@ import {
 	IpcRendererMessages,
 	IpcSyncMessages,
 } from '../common/ipc-messages';
-import theme from './theme';
+// import theme from './theme';
 import SettingsIcon from '@mui/icons-material/Settings';
 import RefreshSharpIcon from '@mui/icons-material/RefreshSharp';
 import CloseIcon from '@mui/icons-material/Close';
@@ -55,7 +55,7 @@ const useStyles = makeStyles(() => ({
 	root: {
 		position: 'absolute',
 		width: '100vw',
-		height: theme.spacing(3),
+		height: "24px",
 		backgroundColor: '#1d1a23',
 		top: 0,
 		WebkitAppRegion: 'drag',
@@ -65,9 +65,9 @@ const useStyles = makeStyles(() => ({
 		width: '100%',
 		textAlign: 'center',
 		display: 'block',
-		height: theme.spacing(3),
-		lineHeight: theme.spacing(3),
-		color: theme.palette.primary.main,
+		height: "24px",
+		lineHeight: "24px",
+		color: "blue",
 	},
 	button: {
 		WebkitAppRegion: 'no-drag',
@@ -230,7 +230,7 @@ export default function App({ t }): JSX.Element {
 				<HostSettingsContext.Provider value={[hostLobbySettings, setHostLobbySettings]}>
 					<SettingsContext.Provider value={[settings, setSetting, setLobbySetting]}>
 						<StyledEngineProvider injectFirst>
-							<ThemeProvider theme={theme}>
+							<ThemeProvider theme={{}}>
 								<TitleBar settingsOpen={settingsOpen} setSettingsOpen={setSettingsOpen} />
 								<Settings t={t} open={settingsOpen} onClose={() => setSettingsOpen(false)} />
 								<Dialog fullWidth open={updaterState.state !== 'unavailable' && diaOpen}>
@@ -309,6 +309,6 @@ export default function App({ t }): JSX.Element {
 	);
 }
 // @ts-ignore
-const App2 = withNamespaces()(App);
+const App2 = withTranslation()(App);
 // @ts-ignore
 ReactDOM.render(<App2 />, document.getElementById('app'));

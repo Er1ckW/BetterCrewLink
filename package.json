@@ -54,6 +54,7 @@
 		"electron-overlay-window": "^4.1.0",
 		"electron-store": "^11.0.2",
 		"electron-updater": "^6.8.3",
+		"electron-window-state": "^5.0.3",
 		"i18next": "^26.0.8",
 		"jimp": "^1.6.1",
 		"lucide-react": "^1.14.0",
@@ -78,6 +79,7 @@
 		"webrtc-adapter": "^9.0.5"
 	},
 	"devDependencies": {
+		"@tailwindcss/postcss": "^4.2.4",
 		"@types/color": "^4.2.1",
 		"@types/cross-spawn": "^6.0.6",
 		"@types/deep-equal": "^1.0.4",

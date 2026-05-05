@@ -14,7 +14,7 @@ import MicOff from '@mui/icons-material/MicOff';
 import VolumeOff from '@mui/icons-material/VolumeOff';
 import WifiOff from '@mui/icons-material/WifiOff';
 import LinkOff from '@mui/icons-material/LinkOff';
-import ErrorOutline from '@mui/icons-material/ErrorOutline'; //@ts-ignore
+// import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import RadioSVG from '../../static/radio.svg';
 import Tooltip from 'react-tooltip-lite';
 import { SocketConfig } from '../common/ISettings';

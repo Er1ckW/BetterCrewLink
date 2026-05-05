@@ -25,7 +25,7 @@ import SupportLink from './SupportLink';
 import Divider from '@mui/material/Divider';
 import { validateClientPeerConfig } from './validateClientPeerConfig';
 // @ts-ignore
-import reverbOgx from 'arraybuffer-loader!../../static/sounds/reverb.ogx'; // @ts-ignore
+import reverbOgx from "../../static/sounds/reverb.ogx?url"; // @ts-ignore
 import radioOnSound from '../../static/sounds/radio_on.wav'; // @ts-ignore
 
 import { CameraLocation, AmongUsMaps, MapType } from '../common/AmongusMap';

@@ -5,7 +5,7 @@ import languages from './languages';
 
 i18n
 	// .use(Backend)
-	.use(reactI18nextModule) // pas
+	.use(initReactI18next) // pas
 	.init({
 		resources: languages,
 		defaultLocale: 'en',

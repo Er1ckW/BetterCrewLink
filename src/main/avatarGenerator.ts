@@ -1,5 +1,5 @@
 import Color from 'color';
-import jimp from 'jimp';
+const jimp = require("jimp");
 import fs from 'fs';
 
 // @ts-ignore

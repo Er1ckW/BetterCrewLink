@@ -1,13 +1,9 @@
-if (typeof window !== 'undefined' && window.location) {
-	const query = new URLSearchParams(window.location.search.substring(1));
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import './css/index.css';
 
-	console.log('HEY');
-	const view = query.get('view') || 'app';
-	if (view === 'app') {
-		import('./App');
-	} else if (view === 'lobbies') {
-		import('./LobbyBrowser/LobbyBrowserContainer');
-	} else {
-		import('./Overlay');
-	}
-}
+ReactDOM.render(
+  React.createElement(App),
+  document.getElementById('app')
+);

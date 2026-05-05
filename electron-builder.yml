@@ -8,7 +8,8 @@ files:
   - from: .
     filter:
       - package.json
-      - app
+      - dist-electron/**
+      - dist/**
 
 win:
   publish:

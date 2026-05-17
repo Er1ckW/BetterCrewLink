@@ -18,11 +18,9 @@
 
 // 		this.stream = await navigator.mediaDevices.getUserMedia({ video: false, audio });
 
-// 		console.log('connected to microphone');
 // 	}
 
 // 	createAudioElement(stream: MediaStream): AudioElement {
-// 		console.log('[createAudioElement]');
 // 		const htmlAudioElement = document.createElement('audio');
 // 		document.body.appendChild(htmlAudioElement);
 // 		htmlAudioElement.srcObject = stream;
@@ -63,11 +61,9 @@
 
 // 	// move to different controller
 // 	updateAudioLocation(currentGameState: AmongUsState, element: SocketElement, localPLayer: Player) {
-// 		//		console.log('updateAudioLocation ->', { element });
 // 		if (!element.audioElement || !element.client) {
 // 			return;
 // 		}
-// 		//	console.log('[updateAudioLocation]');
 // 		const pan = element.audioElement.pan;
 // 		const gain = element.audioElement.gain;
 // 		const audioContext = pan.context;

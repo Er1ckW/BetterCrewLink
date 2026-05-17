@@ -76,7 +76,6 @@
 // 	}
 
 // 	private disconnectElement(element: SocketElement) {
-// 		console.log('disconnectElement!!!');
 // 		if (!element) {
 // 			return;
 // 		}
@@ -95,7 +94,6 @@
 // 		await audioController.startAudio();
 
 // 		this.socketIOClient.on('join', async (peerId: string, client: Client) => {
-// 			console.log('[client.join]', { peerId, client });
 // 			const element = this.getSocketElement(peerId);
 // 			element.client = client;
 // 			this.ensurePeerConnection(element, true);
@@ -109,7 +107,6 @@
 // 	}
 
 // 	private createPeerConnection(socketId: string, stream: MediaStream, initiator): Peer {
-// 		console.log('[createPeerConnection], ', { peerId: socketId });
 // 		const peer: Peer = new Peer({
 // 			stream,
 // 			initiator, // @ts-ignore-line
@@ -119,9 +116,7 @@
 
 // 		peer.on('stream', (recievedDtream: MediaStream) => {
 // 			this.emit('onstream', recievedDtream);
-// 			console.log('stream recieved', { recievedDtream });
 // 			this.getSocketElement(socketId).audioElement = audioController.createAudioElement(recievedDtream);
-// 			console.log(this.getSocketElement(socketId).audioElement);
 // 		});
 
 // 		peer.on('signal', (data) => {
@@ -132,16 +127,13 @@
 // 		});
 
 // 		peer.on('close', () => {
-// 			console.log('PEER ON CLOSE?');
 // 			const socketElement = this.getSocketElement(socketId);
 // 			audioController.disconnectElement(socketElement);
 // 		});
 
 // 		peer.on('error', (err) => {
-// 			console.log('PEER ON error? : ', err);
 // 		});
 
-// 		console.log('peerConnections', this.socketElements);
 // 		return peer;
 // 	}
 
@@ -154,7 +146,6 @@
 
 // 		if (this.connectionState === ConnectionState.connecting || this.currenGameCode !== this.gamecode) {
 // 			this.currenGameCode = this.gamecode;
-// 			console.log(this.localPLayer);
 // 			this.startAudio().then(() => {
 // 				this.socketIOClient.emit('id', this.localPLayer.id, this.localPLayer.clientId);
 // 				this.socketIOClient.emit('join', this.gamecode, this.localPLayer.id, this.localPLayer.clientId);
@@ -170,28 +161,22 @@
 
 // 	private initialize(serverUrl: string) {
 // 		this.socketIOClient?.disconnect();
-// 		console.log('[Connect] got called');
 // 		this.socketIOClient = io(serverUrl, {
 // 			transports: ['websocket'],
 // 		});
 
 // 		this.socketIOClient.on('error', (error: string) => {
-// 			console.log('[client.error', error);
 // 		});
 // 		this.socketIOClient.on('connect', () => {
-// 			console.log('[client.connect]');
 // 		});
 // 		this.socketIOClient.on('disconnect', () => {
-// 			console.log('[client.disconnect]');
 // 		});
 
 // 		this.socketIOClient.on('setClient', (socketId: string, client: Client) => {
-// 			console.log('[client.setClient]', { socketId, client });
 // 			this.getSocketElement(socketId).client = client;
 // 		});
 
 // 		this.socketIOClient.on('setClients', (clients: SocketClientMap) => {
-// 			console.log('[client.setClients]', { clients });
 // 			for (const socketId of Object.keys(clients)) {
 // 				this.getSocketElement(socketId).client = clients[socketId];
 // 			}
@@ -199,7 +184,6 @@
 
 // 		this.socketIOClient.on('signal', ({ data, from }: { data: any; from: string }) => {
 // 			if (data.hasOwnProperty('gameState')) {
-// 				//	console.log('gamestateupdate?');
 // 				this.onGameStateChange(data as AmongUsState);
 // 				return;
 // 			}

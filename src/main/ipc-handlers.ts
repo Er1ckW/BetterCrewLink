@@ -32,11 +32,10 @@ export const initializeIpcListeners = (): void => {
 			shell.openExternal(platform.runPath);
 		} else if (platform.launchType === PlatformRunType.EXE) {
 			try {
-				const process = spawn(
-					path.join(platform.runPath, platform.execute[0]),
-					platform.execute.slice(1),
-					{ detached: true, stdio: 'ignore' }
-				);
+				const process = spawn(path.join(platform.runPath, platform.execute[0]), platform.execute.slice(1), {
+					detached: true,
+					stdio: 'ignore',
+				});
 				process.on('error', error);
 				process.unref();
 			} catch (e) {
@@ -88,7 +87,7 @@ export const initializeIpcListeners = (): void => {
 // or the caller should be "await"'ing them.  If neither of these are the case
 // consider making it a "listener" instead for performance and readability
 export const initializeIpcHandlers = (): void => {
-	ipcMain.handle(IpcMessages.REQUEST_PLATFORMS_AVAILABLE, (_, customPlatforms: GamePlatformMap) => {
+	ipcMain.handle(IpcMessages.REQUEST_PLATFORMS_AVAILABLE, async (_, customPlatforms: GamePlatformMap) => {
 		const desktop_platform = platform();
 
 		// Assume all game platforms are unavailable unless proven otherwise
@@ -150,8 +149,8 @@ export const initializeIpcHandlers = (): void => {
 			}
 		}
 
-		// Deal with custom client-added platforms
-		for (const key in customPlatforms) {
+		// Deal with custom client-added platforms concurrently for performance
+		const customPlatformPromises = Object.keys(customPlatforms).map(async (key) => {
 			const game_platform = customPlatforms[key];
 
 			if (game_platform.launchType === PlatformRunType.URI) {
@@ -159,13 +158,15 @@ export const initializeIpcHandlers = (): void => {
 				availableGamePlatforms[key] = game_platform;
 			} else if (game_platform.launchType === PlatformRunType.EXE) {
 				try {
-					fs.accessSync(path.join(game_platform.runPath, game_platform.execute[0]), fs.constants.X_OK);
+					await fs.promises.access(path.join(game_platform.runPath, game_platform.execute[0]), fs.constants.X_OK);
 					availableGamePlatforms[key] = game_platform;
 				} catch {
-					continue;
+					// Access failed, continue without adding to available platforms
 				}
 			}
-		}
+		});
+
+		await Promise.all(customPlatformPromises);
 
 		return availableGamePlatforms;
 	});

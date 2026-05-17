@@ -26,7 +26,8 @@
 		"dist:64": "yarn compile && electron-builder --win --x64",
 		"dist:linux": "yarn compile && electron-builder --linux --x64",
 		"publish": "yarn compile && electron-builder --win --x64 --ia32 --publish always ",
-		"publish:linux": "yarn compile && electron-builder --x64 --linux --publish always"
+		"publish:linux": "yarn compile && electron-builder --x64 --linux --publish always",
+		"test": "jest"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.9.3",

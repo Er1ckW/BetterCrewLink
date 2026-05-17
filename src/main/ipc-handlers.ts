@@ -88,7 +88,7 @@ export const initializeIpcListeners = (): void => {
 // or the caller should be "await"'ing them.  If neither of these are the case
 // consider making it a "listener" instead for performance and readability
 export const initializeIpcHandlers = (): void => {
-	ipcMain.handle(IpcMessages.REQUEST_PLATFORMS_AVAILABLE, (_, customPlatforms: GamePlatformMap) => {
+	ipcMain.handle(IpcMessages.REQUEST_PLATFORMS_AVAILABLE, async (_, customPlatforms: GamePlatformMap) => {
 		const desktop_platform = platform();
 
 		// Assume all game platforms are unavailable unless proven otherwise
@@ -137,7 +137,10 @@ export const initializeIpcHandlers = (): void => {
 		} else if (desktop_platform === 'linux') {
 			// Add platform to availableGamePlatforms and setup data if platform is available, do nothing otherwise
 			try {
-				const vdfString = fs.readFileSync(homedir() + '/.steam/registry.vdf').toString();
+				// We use async file read here to prevent blocking the Electron main thread event loop.
+				// This improves overall application responsiveness when retrieving available platforms.
+				const vdfBuffer = await fs.promises.readFile(homedir() + '/.steam/registry.vdf');
+				const vdfString = vdfBuffer.toString();
 				const vdfObject = parse(vdfString) as {
 					Registry: { HKCU: { Software: { Valve: { Steam: { Apps: { 945360: { installed: number } } } } } } };
 				};
@@ -159,7 +162,8 @@ export const initializeIpcHandlers = (): void => {
 				availableGamePlatforms[key] = game_platform;
 			} else if (game_platform.launchType === PlatformRunType.EXE) {
 				try {
-					fs.accessSync(path.join(game_platform.runPath, game_platform.execute[0]), fs.constants.X_OK);
+					// We use async access to ensure the main event loop is not blocked during I/O operations.
+					await fs.promises.access(path.join(game_platform.runPath, game_platform.execute[0]), fs.constants.X_OK);
 					availableGamePlatforms[key] = game_platform;
 				} catch {
 					continue;

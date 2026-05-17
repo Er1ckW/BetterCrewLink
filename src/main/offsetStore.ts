@@ -191,10 +191,28 @@ export async function fetchOffsets(is_64bit: boolean, filename: string, offsetsV
 		console.log("Loading cached offsets");
 		return store.get('IOffsets');
 	}
-	const offsets = await fetchOffsetsJson(is_64bit, filename);
-	store.set('filename', filename);
-	store.set('is_64bit', is_64bit);
-	store.set('offsetsVersion', offsetsVersion ? offsetsVersion : 0);
-	store.set('IOffsets', offsets);
-	return offsets;
+
+	try {
+		// Attempt to fetch fresh offsets from the network
+		const offsets = await fetchOffsetsJson(is_64bit, filename);
+
+		// If successful, update the cache with the new offsets and metadata
+		store.set('filename', filename);
+		store.set('is_64bit', is_64bit);
+		store.set('offsetsVersion', offsetsVersion ? offsetsVersion : 0);
+		store.set('IOffsets', offsets);
+
+		return offsets;
+	} catch (e) {
+		// In case of a network error, check if we have cached offsets for the EXACT same game binary.
+		// We ignore the offsetsVersion check here, since returning an older offset cache is better than
+		// failing completely when offline.
+		if (store.get('filename') == filename && store.get('is_64bit') == is_64bit) {
+			console.log('Network error, falling back to cached offsets');
+			return store.get('IOffsets');
+		}
+
+		// If we don't have matching cached offsets, we cannot proceed.
+		throw Errors.OFFSETS_FETCH_ERROR;
+	}
 }
